@@ -5,4 +5,4 @@ venv/
 .vscode/
 .DS_Store
 .env
-data/
+data/*.db
