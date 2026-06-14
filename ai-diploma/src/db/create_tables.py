@@ -5,8 +5,7 @@ def create_products_table(connection):
     # .cursor() создаёт из него курсор — специальный объект для выполнения SQL-команд
     cursor = connection.cursor()
 
-    # .execute(...) говорит курсору: «выполни эту SQL-команду»
-    # Внутри скобок — многострочная строка с запросом CREATE TABLE
+
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS products (   -- IF NOT EXISTS: создаём таблицу, только если её ещё нет
         id INTEGER PRIMARY KEY AUTOINCREMENT,   -- id будет сам увеличиваться при каждой вставке

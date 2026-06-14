@@ -1,4 +1,4 @@
-def get_total_revenue(connection):
+def get_total_revenue(connection):    #Функция вычисляет общую выручку от всех товаров
     cursor = connection.cursor()
 
     # SUM(revenue) — SQL складывает все значения в колонке revenue
@@ -10,7 +10,7 @@ def get_total_revenue(connection):
     # Если таблица пустая, SUM вернёт None — заменяем на 0, чтобы не было ошибок
     return result if result is not None else 0
 
-def get_average_price(connection):
+def get_average_price(connection):   #Функция вычисляет среднюю цену за коробку по всем товарам
     cursor = connection.cursor()
 
     # AVG(price_per_box) — считает среднее значение цены за коробку
@@ -18,7 +18,7 @@ def get_average_price(connection):
     result = cursor.fetchone()[0]
     return result if result is not None else 0
 
-def get_category_report(connection):
+def get_category_report(connection):    #ункция формирует отчёт по категориям товаров
     cursor = connection.cursor()
 
     # GROUP BY category — объединяет строки с одинаковой категорией в одну группу
@@ -33,7 +33,7 @@ def get_category_report(connection):
     """)
     return cursor.fetchall()
 
-def get_supplier_report(connection):
+def get_supplier_report(connection):     #Функция формирует отчёт по поставщикам
     cursor = connection.cursor()
 
     # GROUP BY supplier — группируем товары по поставщикам

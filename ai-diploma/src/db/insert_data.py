@@ -2,7 +2,7 @@ def clear_products(connection):
     # Создаём курсор — он нужен для любой SQL-команды
     cursor = connection.cursor()
 
-    # DELETE FROM products без WHERE удаляет ВСЕ строки из таблицы products
+    # DELETE FROM products  удаляем ВСЕ строки из таблицы products
     cursor.execute("DELETE FROM products")
 
     # Сохраняем изменения в файле БД
@@ -14,7 +14,7 @@ def clear_suppliers(connection):
     connection.commit()
 
 def add_product(connection, name, supplier, category, boxes, price_per_box):
-    cursor = connection.cursor()
+    cursor = connection.cursor()   #Функция добавляет новый товар в таблицу products
 
     # Считаем выручку в Python: коробки × цена за коробку
     revenue = boxes * price_per_box
@@ -31,7 +31,7 @@ def add_product(connection, name, supplier, category, boxes, price_per_box):
     connection.commit()
 
 def add_supplier(connection, name, city, contact, rating, total_orders):
-    cursor = connection.cursor()
+    cursor = connection.cursor()   #Функция добавляет нового поставщика в таблицу suppliers
     cursor.execute("""
         INSERT INTO suppliers (name, city, contact, rating, total_orders)
         VALUES (?, ?, ?, ?, ?)
