@@ -1,13 +1,13 @@
 import sqlite3
 from pathlib import Path
 
-def get_connection():
+def get_connection():         #Функция создаёт подключение к базе данных warehouse_project.db
     data_dir = Path("data")
     data_dir.mkdir(exist_ok=True)
     db_path = data_dir / "warehouse_project.db"
     return sqlite3.connect(db_path)
 
-def create_tables(conn):
+def create_tables(conn):        #Функция создаёт таблицы в базе данных, если они ещё не существуют
     cursor = conn.cursor()
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS products (
@@ -33,7 +33,7 @@ def create_tables(conn):
     """)
     conn.commit()
 
-def add_product(conn, name, supplier, category, boxes, price_per_box):
+def add_product(conn, name, supplier, category, boxes, price_per_box):      #Функция добавляет новый товар в таблицу products
     cursor = conn.cursor()
     revenue = boxes * price_per_box
     cursor.execute("""
@@ -42,7 +42,7 @@ def add_product(conn, name, supplier, category, boxes, price_per_box):
     """, (name, supplier, category, boxes, price_per_box, revenue))
     conn.commit()
 
-def add_supplier(conn, name, city, contact, rating, total_orders):
+def add_supplier(conn, name, city, contact, rating, total_orders):      #Функция добавляет нового поставщика в таблицу suppliers
     cursor = conn.cursor()
     cursor.execute("""
         INSERT INTO suppliers (name, city, contact, rating, total_orders)
@@ -50,11 +50,11 @@ def add_supplier(conn, name, city, contact, rating, total_orders):
     """, (name, city, contact, rating, total_orders))
     conn.commit()
 
-def clear_data(conn):
+def clear_data(conn):        #Функция полностью очищает все таблицы в базе данных
     conn.execute("DELETE FROM products")
     conn.execute("DELETE FROM suppliers")
 
-def load_demo_data(conn):
+def load_demo_data(conn):        #Функция загружает демонстрационные данные в базу
     clear_data(conn)
     
     # Поставщики
@@ -79,17 +79,19 @@ def load_demo_data(conn):
     for p in products:
         add_product(conn, p[0], p[1], p[2], p[3], p[4])
 
-def print_header(title):
+                      # ФУНКЦИИ ДЛЯ КРАСИВОГО ВЫВОДА ОТЧЁТОВ
+
+def print_header(title):   # Функция выводит красивый заголовок с рамкой
     print("\n" + "=" * 70)
     print(f" {title}")
     print("=" * 70)
 
-def print_section(title):
+def print_section(title):      # Функция выводит раздел с декоративной линией
     print("\n" + "-" * 50)
     print(f" {title}")
     print("-" * 50)
 
-def show_products_report(conn):
+def show_products_report(conn):     #Функция показывает подробный отчёт по всем товарам
     cursor = conn.cursor()
     cursor.execute("""
         SELECT name, supplier, category, boxes, price_per_box, revenue 
@@ -111,7 +113,7 @@ def show_products_report(conn):
     print(f"{'ИТОГО:':<60} {total_revenue:>13,.0f} руб.")
     print(f"Всего товаров: {len(products)}")
 
-def show_suppliers_report(conn):
+def show_suppliers_report(conn):      #Функция показывает отчёт по всем поставщикам
     cursor = conn.cursor()
     cursor.execute("SELECT name, city, rating, total_orders FROM suppliers ORDER BY rating DESC")
     suppliers = cursor.fetchall()
@@ -123,7 +125,7 @@ def show_suppliers_report(conn):
     for s in suppliers:
         print(f"{s[0]:<25} {s[1]:<20} {s[2]:>8.1f} {s[3]:>10}")
 
-def show_category_report(conn):
+def show_category_report(conn):     ##Функция показывает аналитический отчёт по категориям товаров
     cursor = conn.cursor()
     cursor.execute("""
         SELECT category, COUNT(*) as cnt, SUM(boxes) as total_boxes, SUM(revenue) as total_revenue
@@ -140,7 +142,7 @@ def show_category_report(conn):
     for c in categories:
         print(f"{c[0]:<15} {c[1]:>8} {c[2]:>10} {c[3]:>17,.0f} руб.")
 
-def show_top_products(conn):
+def show_top_products(conn):       #Функция показывает топ-3 товара по выручке
     cursor = conn.cursor()
     cursor.execute("""
         SELECT name, supplier, revenue 
@@ -154,7 +156,7 @@ def show_top_products(conn):
     for i, p in enumerate(top, 1):
         print(f"  {i}. {p[0]} (поставщик: {p[1]}) — {p[2]:,.0f} руб.")
 
-def show_supplier_stats(conn):
+def show_supplier_stats(conn):        #Функция показывает статистику по выручке каждого поставщика
     cursor = conn.cursor()
     cursor.execute("""
         SELECT supplier, COUNT(*) as cnt, SUM(revenue) as total_revenue
@@ -168,7 +170,7 @@ def show_supplier_stats(conn):
     for s in stats:
         print(f"  {s[0]}: {s[1]} товаров — {s[2]:,.0f} руб.")
 
-def main():
+def main():                            #Главная функция программы.
     print_header("📦 СКЛАДСКОЙ УЧЁТ ТОВАРОВ 📦")
     
     conn = get_connection()
