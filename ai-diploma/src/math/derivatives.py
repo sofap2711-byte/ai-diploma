@@ -5,7 +5,7 @@
 Производная показывает, как быстро меняется выручка при изменении цены.
 """
 
-from src.functions import revenue, loss_function
+from functions import revenue, loss_function
 
 def revenue_derivative(price):
     """

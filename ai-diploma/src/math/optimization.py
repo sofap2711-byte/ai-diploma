@@ -4,8 +4,8 @@
 Мы будем искать оптимальную цену, при которой выручка максимальна.
 """
 
-from src.functions import revenue, loss_function
-from src.derivatives import loss_derivative
+from functions import revenue, loss_function
+from derivatives import loss_derivative
 
 
 def gradient_descent(start_price, learning_rate, steps):
