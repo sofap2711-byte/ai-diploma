@@ -8,8 +8,8 @@ def get_connection():         #Функция создаёт подключен�
     return sqlite3.connect(db_path)
 
 def create_tables(conn):        #Функция создаёт таблицы в базе данных, если они ещё не существуют
-    cursor = conn.cursor()
-    cursor.execute("""
+    cursor = conn.cursor()   
+    cursor.execute("""        
     CREATE TABLE IF NOT EXISTS products (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
